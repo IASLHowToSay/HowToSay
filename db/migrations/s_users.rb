@@ -4,7 +4,7 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:suer) do
+    create_table(:s_uers) do
       primary_key :id
 
       String :name, unique: true, null: false
