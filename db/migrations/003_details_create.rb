@@ -4,7 +4,7 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:cate_details) do
+    create_table(:details) do
       primary_key :id
 
       String :name, unique: true, null: false

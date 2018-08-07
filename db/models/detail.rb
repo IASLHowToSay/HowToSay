@@ -5,8 +5,8 @@ require 'sequel'
 
 module Howtosay
   # Models a Cate_Detail
-  class Cate_Detail < Sequel::Model
-    one_to_many :cate_details
+  class Detail < Sequel::Model
+    many_to_one :cate
 
     plugin :timestamps
 
@@ -15,14 +15,16 @@ module Howtosay
       JSON(
         {
           data: {
-            type: 'cate',
+            type: 'cate_detail',
             attributes: {
               id: id,
-              name: name
+              name: name,
+              cate_id: cate_id,
+              description: description
             }
           },
           included: {
-            cate_detail: cate_details
+            details: details
           }
         }, options
       )

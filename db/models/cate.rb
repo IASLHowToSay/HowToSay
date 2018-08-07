@@ -6,7 +6,7 @@ require 'sequel'
 module Howtosay
   # Models a Account
   class Cate < Sequel::Model
-    one_to_many :cate_details
+    one_to_many :details
 
     plugin :timestamps
 
