@@ -4,14 +4,15 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:suers) do
+    create_table(:accounts) do
       primary_key :id
 
-      String :name, unique: true, null: false
+      String :name, unique: true, null: false 
       String :email, unique: true, null: false
       String :password
-      String :role
-
+      Boolean :teacher # is teacher or student
+      Boolean :can_rewrite# true:rewrite false:grade
+      
       DateTime :created_at
       DateTime :updated_at
     end
