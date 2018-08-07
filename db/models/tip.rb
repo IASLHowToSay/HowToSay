@@ -4,9 +4,9 @@ require 'json'
 require 'sequel'
 
 module Howtosay
-  # Models a Detail
-  class Detail < Sequel::Model
-    many_to_one :cate
+  # Models a Tip
+  class Tip < Sequel::Model
+    one_to_many :questions
 
     plugin :timestamps
 
@@ -15,16 +15,11 @@ module Howtosay
       JSON(
         {
           data: {
-            type: 'cate_detail',
+            type: 'tip',
             attributes: {
               id: id,
-              name: name,
-              cate_id: cate_id,
               description: description
             }
-          },
-          included: {
-            details: details
           }
         }, options
       )
