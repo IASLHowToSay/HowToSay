@@ -7,6 +7,7 @@ module Howtosay
   # Models a Account
   class Cate < Sequel::Model
     one_to_many :details
+    # one_to_many :questions
 
     plugin :timestamps
 
@@ -21,9 +22,6 @@ module Howtosay
               name: name
             }
           },
-          included: {
-            cate_detail: cate_details
-          }
         }, options
       )
     end

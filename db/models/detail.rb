@@ -7,6 +7,7 @@ module Howtosay
   # Models a Cate_Detail
   class Detail < Sequel::Model
     many_to_one :cate
+    #one_to_many :questions
 
     plugin :timestamps
 
@@ -15,7 +16,7 @@ module Howtosay
       JSON(
         {
           data: {
-            type: 'cate_detail',
+            type: 'detail',
             attributes: {
               id: id,
               name: name,
@@ -24,7 +25,7 @@ module Howtosay
             }
           },
           included: {
-            details: details
+            cate: cate.to_json
           }
         }, options
       )
