@@ -7,7 +7,7 @@ module Howtosay
   # Models a Account
   class Cate < Sequel::Model
     one_to_many :details
-    # one_to_many :questions
+    one_to_many :questions
 
     plugin :timestamps
 

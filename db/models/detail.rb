@@ -7,7 +7,7 @@ module Howtosay
   # Models a Cate_Detail
   class Detail < Sequel::Model
     many_to_one :cate
-    #one_to_many :questions
+    one_to_many :questions
 
     plugin :timestamps
 

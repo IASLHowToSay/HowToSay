@@ -18,7 +18,7 @@ Sequel.migration do
       DateTime :updated_at
 
       foreign_key [:cate_id], table: :cates
-      foreign_key [:cate_detail_id], table: :cate_details
+      foreign_key [:detail_id], table: :details
       foreign_key [:tip_id], table: :tips
 
     end
