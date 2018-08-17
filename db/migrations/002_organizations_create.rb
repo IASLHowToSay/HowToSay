@@ -4,14 +4,14 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:status) do
-      
+    create_table(:organizations) do
       primary_key :id
 
-      Boolean :can_rewrite, default: true # true:rewrite false:grade
-
+      String  :name, unique: true, null: false
+      
       DateTime :created_at
       DateTime :updated_at
+      
     end
   end
 end

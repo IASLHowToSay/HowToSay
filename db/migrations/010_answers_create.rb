@@ -10,10 +10,6 @@ Sequel.migration do
       Integer :question_id, null: false
       String :content
       Integer :writer_id, null: false # the account who write the answer
-      String :yes_member
-      String :no_member
-      Integer :yes
-      Integer :no
       DateTime :created_at
       DateTime :updated_at
 

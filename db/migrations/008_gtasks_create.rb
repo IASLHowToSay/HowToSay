@@ -3,7 +3,7 @@
 require 'sequel'
 Sequel.migration do
     change do
-        create_table(:task) do
+        create_table(:gtasks) do
 
             foreign_key :account_id, table: :accounts, :null=>false
             foreign_key :question_id, :questions, :null=>false

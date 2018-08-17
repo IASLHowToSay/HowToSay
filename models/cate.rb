@@ -20,9 +20,6 @@ module Howtosay
               id: id,
               name: name
             }
-          },
-          included: {
-            cate_detail: cate_details
           }
         }, options
       )

@@ -8,17 +8,14 @@ Sequel.migration do
       primary_key :id
 
       Integer :cate_id, null: false
-      Integer :tip_id, null: false
+      Integer :source_id, null: false
       String :content, null: false 
-      # Integer :yes, default: 0
-      # Integer :no, default: 0
-      # String :details
      
       DateTime :created_at
       DateTime :updated_at
 
       foreign_key [:cate_id], table: :cates
-      foreign_key [:tip_id], table: :tips
+      foreign_key [:source_id], table: :sources
 
     end
   end

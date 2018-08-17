@@ -4,10 +4,11 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:tips) do
+    create_table(:cates) do
       primary_key :id
 
-      String :description, unique: true, null: false
+      String :name, unique: true, null: false
+      String :description
 
       DateTime :created_at
       DateTime :updated_at
