@@ -28,13 +28,14 @@ module Howtosay
     end
 
     # For all runnable environments
-    configure :development, :test, :production do
+    configure do
       require 'sequel'
       DB = Sequel.connect(ENV['DATABASE_URL'])
 
       def self.DB
         DB
       end
+      # SecureDB.setup(config)
     end
   end
 end
