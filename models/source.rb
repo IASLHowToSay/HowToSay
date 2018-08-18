@@ -4,12 +4,10 @@ require 'json'
 require 'sequel'
 
 module Howtosay
-  # Models a Question
-  class Question < Sequel::Model
-    many_to_one :cate
-    many_to_one :source
-    one_to_many :goodquestions
-    one_to_many :gooddetails
+  # Models a Source
+  class Source < Sequel::Model
+    
+    one_to_many :questions
 
     plugin :timestamps
 
@@ -17,11 +15,9 @@ module Howtosay
     def to_json(options = {})
       JSON(
         {
-          type: 'question',
+          type: 'source',
           id: id,
-          cate: cate,
-          source: source,
-          content: content
+          name: name
         }, options
       )
     end

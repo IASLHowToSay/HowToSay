@@ -14,18 +14,11 @@ module Howtosay
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'cate_detail',
-            attributes: {
-              id: id,
-              name: name,
-              cate_id: cate_id,
-              description: description
-            }
-          },
-          included: {
-            details: details
-          }
+          type: 'detail',
+          id: id,
+          name: name,
+          cate_id: cate_id,
+          description: description
         }, options
       )
     end

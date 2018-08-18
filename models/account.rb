@@ -8,7 +8,9 @@ module Howtosay
   class Account < Sequel::Model
 
     many_to_one :organization
-    
+    many_to_many :Question, left_key: :id, right_key: :id,join_table: :wtasks
+    many_to_many :Question, left_key: :id, right_key: :id,join_table: :gtasks
+
     plugin :timestamps
 
     def to_h

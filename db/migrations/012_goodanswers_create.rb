@@ -5,16 +5,18 @@ require 'sequel'
 Sequel.migration do
   change do
     create_table(:goodanswers) do
-      primary_key :answer_id
 
-      Integer :grader_id, null: false
+      foreign_key :answer_id, :answers, :null=>false
+      foreign_key :grade_id, table: :accounts, :null=>false
+
+      primary_key [:answer_id, :grade_id]
+
       Boolean :good
       
       DateTime :created_at
       DateTime :updated_at
-
-      foreign_key [:answer_id], table: :answers
-      foreign_key [:grader_id], table: :accounts
+      
+      index [:answer_id, :grade_id]
 
     end
   end
