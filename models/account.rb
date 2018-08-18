@@ -17,7 +17,8 @@ module Howtosay
       self.salt = SecureDB.new_salt
       self.password_hash = SecureDB.hash_password(salt, new_password)
     end
-
+    
+    # 只會回答true or false
     def password?(try_password)
       try_hashed = SecureDB.hash_password(salt, try_password)
       try_hashed == password_hash

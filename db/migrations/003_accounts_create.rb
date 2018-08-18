@@ -9,8 +9,8 @@ Sequel.migration do
 
       String  :name, null: false 
       String  :email, unique: true, null: false
-      String :password_hash
-      String :salt
+      String  :password_hash
+      String  :salt
       Integer :organization_id
       Boolean :teacher # is teacher or student
       Boolean :can_rewrite

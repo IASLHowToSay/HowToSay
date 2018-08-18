@@ -9,6 +9,8 @@ gem 'json'
 # Configuration
 gem 'econfig'
 gem 'rake'
+
+# Diagnostic
 gem 'pry'
 
 # Security
@@ -24,7 +26,7 @@ group :development, :test do
 end
 
 group :production do
-  # gem 'pg'
+  gem 'pg'
 end
 
 
