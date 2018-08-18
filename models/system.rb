@@ -14,7 +14,8 @@ module Howtosay
           type: 'system',
           can_register: can_register,
           can_rewrite: can_rewrite,
-          can_grade: can_grade
+          can_grade: can_grade,
+          description: description
         }
     end
   

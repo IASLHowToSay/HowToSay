@@ -11,7 +11,17 @@ module Howtosay
     many_to_many :Question, left_key: :id, right_key: :id,join_table: :wtasks
     many_to_many :Question, left_key: :id, right_key: :id,join_table: :gtasks
 
-    plugin :timestamps
+    plugin :timestamps, update_on_create: true
+
+    def password=(new_password)
+      self.salt = SecureDB.new_salt
+      self.password_hash = SecureDB.hash_password(salt, new_password)
+    end
+
+    def password?(try_password)
+      try_hashed = SecureDB.hash_password(salt, try_password)
+      try_hashed == password_hash
+    end
 
     def to_h
         {
@@ -19,7 +29,6 @@ module Howtosay
           id: id,
           name: name,
           email: email,
-          password: password,
           organization: organization,
           teacher: teacher,
           can_rewrite: can_rewrite,

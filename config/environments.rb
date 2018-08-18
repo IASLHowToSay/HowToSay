@@ -35,7 +35,7 @@ module Howtosay
       def self.DB
         DB
       end
-      # SecureDB.setup(config)
+      SecureDB.setup(config)
     end
   end
 end

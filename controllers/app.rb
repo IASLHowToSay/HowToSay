@@ -20,12 +20,15 @@ module Howtosay
         routing.on 'v1' do
           @api_root = "api/v1"
 
-          routing.on 'cates' do
-            @cate_route = "#{@api_root}/cates"
+          routing.on 'home' do
             cates = Cate.all
+            s = System.first
+            a = Account.first
+            s.to_json
           rescue StandardError => error
             routing.halt 404, { message: error.message }.to_json
           end
+
         end
       end
     end

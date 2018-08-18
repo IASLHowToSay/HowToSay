@@ -30,24 +30,29 @@ task :console => :print_env do
 end
 
 namespace :db do
-  require_relative 'config/environments.rb' # load config info
-  require 'sequel'
+  require_relative 'lib/init' # load libraries
+  require_relative 'config/init' # load config info
+  app = Howtosay::Api
 
   Sequel.extension :migration
   app = Howtosay::Api
 
+  task :setup do
+    require 'sequel'
+    Sequel.extension :migration
+  end
+
+  task :load_models do
+    require_relative 'models/init'
+    require_relative 'services/init'
+  end
+
   desc 'Run migrations'
-  task :migrate => :print_env do
+  task :migrate => [:setup, :print_env] do
     puts 'Migrating database to latest'
-    puts app.DB
     Sequel::Migrator.run(app.DB, 'db/migrations')
   end
 
-  desc 'Delete database'
-  task :delete do
-    # app.DB[:documents].delete
-    # app.DB[:projects].delete
-  end
 
   desc 'Delete dev or test database file'
   task :drop do
@@ -55,10 +60,10 @@ namespace :db do
       puts 'Cannot wipe production database!'
       return
     end
-
     FileUtils.rm(app.config.DB_FILENAME)
     puts "Deleted #{app.config.DB_FILENAME}"
   end
+
 
   desc 'Delete and migrate again'
   task reset: [:drop, :migrate]

@@ -16,7 +16,8 @@ module Howtosay
         {
           type: 'cate',
           id: id,
-          name: name
+          name: name,
+          description: description
         }, options
       )
     end

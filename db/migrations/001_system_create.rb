@@ -9,7 +9,7 @@ Sequel.migration do
       Boolean :can_register, default: true
       Boolean :can_rewrite, default: true
       Boolean :can_grade, default: true
-
+      String  :description
     end
   end
 end

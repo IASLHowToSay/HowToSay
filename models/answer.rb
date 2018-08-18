@@ -2,7 +2,6 @@
 
 require 'json'
 require 'sequel'
-require 'account'
 
 module Howtosay
   # Models a Answer

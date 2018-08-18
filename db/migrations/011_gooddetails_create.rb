@@ -17,7 +17,7 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
       
-      index [:question_id, :gwriter_id]
+      index [:question_id, :writer_id]
 
     end
   end
