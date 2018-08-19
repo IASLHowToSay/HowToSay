@@ -1,0 +1,7 @@
+---
+- name: '美食類型'
+  care_id: 1
+  description: 'EX:日式、台式'
+- name: '餐廳禮儀'
+  care_id: 1
+  description: 'EX:法式餐桌禮儀大不同'  

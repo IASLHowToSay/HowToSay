@@ -1,0 +1,7 @@
+---
+- cate_id: 1
+  cate_detail_id: 1
+  description: 'EX:日式、台式'
+- name: '餐廳禮儀'
+  care_id: 1
+  description: 'EX:法式餐桌禮儀大不同'  
