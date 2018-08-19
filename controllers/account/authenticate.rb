@@ -13,6 +13,7 @@ module Howtosay
         auth_account.to_json
       rescue UnauthorizedError => error
         puts [error.class, error.message].join ': '
+        # 403 Forbidden 沒有權限訪問
         routing.halt '403', { message: 'Invalid credentials' }.to_json
       end
     end

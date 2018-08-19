@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 require 'roda'
 
@@ -8,7 +7,7 @@ module Howtosay
     route('accounts') do |routing|
       @account_route = "#{@api_root}/accounts"
 
-      routing.on 'authenticate' do
+      routing.on 'authenticate' do 
         routing.route('authenticate', 'accounts')
       end
 
