@@ -5,7 +5,7 @@ development:
 
 test:
   DB_FILENAME: db/test.db
-  ECURE_SCHEME: HTTP
+  SECURE_SCHEME: HTTP
 
 production:
   SECURE_SCHEME: HTTPS
