@@ -2,7 +2,7 @@
 
 require 'rake/testtask'
 
-# task default: [:spec]
+task default: [:print_env]
 
 # desc 'Tests API specs only'
 # task :api_spec do
@@ -32,7 +32,6 @@ end
 namespace :db do
   require_relative 'lib/init' # load libraries
   require_relative 'config/init' # load config info
-  app = Howtosay::Api
 
   Sequel.extension :migration
   app = Howtosay::Api
