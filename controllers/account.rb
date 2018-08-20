@@ -6,7 +6,7 @@ module Howtosay
   class Api < Roda
     route('accounts') do |routing|
       @account_route = "#{@api_root}/accounts"
-
+      
       routing.on 'authenticate' do 
         routing.route('authenticate', 'accounts')
       end
@@ -20,6 +20,7 @@ module Howtosay
           routing.halt 404, { message: error.message }.to_json
         end
       end
+
 
       # POST api/v1/accounts
       routing.post do
@@ -36,6 +37,7 @@ module Howtosay
         puts error.inspect
         routing.halt 500, { message: error.message }.to_json
       end
+
     end
   end
 end
