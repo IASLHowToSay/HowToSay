@@ -12,7 +12,7 @@ module Howtosay
       end
 
       routing.on String do |email|
-        # GET api/v1/accounts/[EMAIL]
+        # GET api/v1/accounts/[email]
         routing.get do
           account = Account.first(email: email)
           account ? account.to_json : raise('Account not found')
