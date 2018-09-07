@@ -2,22 +2,66 @@
 
 Sequel.seed(:development) do
   def run
-    puts 'Seeding cates'
+    puts 'Seeding organizations, cates, details, sources, questions'
+    create_organizations
     create_cates
+    create_details
+    create_sources
+    create_questions
   end
 end
   
 require 'yaml'
 DIR = File.dirname(__FILE__)
-CATES_INFO = YAML.load_file("#{DIR}/cates_seed.yml")
+ORGANIZATIONS_INFO = YAML.load_file("#{DIR}/organization_seeds.yml")
+CATES_INFO = YAML.load_file("#{DIR}/cate_seeds.yml")
+DETAILS_INFO = YAML.load_file("#{DIR}/detail_seeds.yml")
+SOURCES_INFO = YAML.load_file("#{DIR}/source_seeds.yml")
+QUESTIONS_INFO = YAML.load_file("#{DIR}/question_seeds.yml")
 
+def create_organizations
+  ORGANIZATIONS_INFO.each do |organization_info|
+    Howtosay::Organization.create(organization_info)
+  end
+end
   
 def create_cates
   CATES_INFO.each do |cate_info|
     Howtosay::Cate.create(cate_info)
   end
 end
-  
+
+def create_details
+  DETAILS_INFO.each do |detail_info|
+    cate = Howtosay::Cate.first(name: detail_info['cate'])
+    detail ={
+        name: detail_info['name'],
+        cate_id: cate.id,
+        description: detail_info['description']
+    }
+    Howtosay::Detail.create(detail)
+  end
+end
+
+def create_sources
+  SOURCES_INFO.each do |source_info|
+    Howtosay::Source.create(source_info)
+  end
+end
+
+def create_questions
+    QUESTIONS_INFO.each do |question_info|
+      cate = Howtosay::Cate.first(name: question_info['cate'])
+      source = Howtosay::Source.first(name: question_info['source'])
+      question ={
+        cate_id: cate.id,
+        source_id: source.id,
+        content: question_info['content']
+      }
+      Howtosay::Question.create(question)
+    end
+  end
+
 # def create_owned_projects
 #     OWNER_INFO.each do |owner|
 #       account = Credence::Account.first(username: owner['username'])

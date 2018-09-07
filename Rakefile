@@ -4,22 +4,6 @@ require 'rake/testtask'
 
 task default: [:print_env]
 
-# desc 'Tests API specs only'
-# task :api_spec do
-#   sh 'ruby specs/api_spec.rb'
-# end
-
-# desc 'Run all the tests'
-# Rake::TestTask.new(:spec) do |t|
-#   t.pattern = 'specs/*_spec.rb'
-#   t.warning = false
-# end
-
-# desc 'Runs rubocop on tested code'
-# task style: [:spec] do
-#   sh 'rubocop app.rb models/*.rb'
-# end
-
 task :print_env do
   puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
 end
@@ -65,8 +49,23 @@ namespace :db do
   end
 
 
-  desc 'Delete and migrate again'
-  task reset: [:drop, :migrate]
+  task :reset_seeds => [:setup, :load_models] do
+    app.DB[:schema_seeds].delete if app.DB.tables.include?(:schema_seeds)
+    Howtosay::Organization.dataset.destroy
+    Howtosay::Question.dataset.destroy
+    Howtosay::Detail.dataset.destroy
+    Howtosay::Cate.dataset.destroy
+    Howtosay::Source.dataset.destroy
+  end
+
+  desc 'Seeds the development database'
+  task :seed => [:setup, :print_env, :load_models] do
+    require 'sequel/extensions/seed'
+    Sequel::Seed.setup(:development)
+    Sequel.extension :seed
+    Sequel::Seeder.apply(app.DB, 'db/seeds')
+  end
+
 end
 
 namespace :newkey do

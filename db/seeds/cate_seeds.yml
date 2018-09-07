@@ -1,7 +1,13 @@
 ---
 - name: '食'
+  description: '食的敘述'
 - name: '衣'
+  description: '衣的敘述'
 - name: '住'
+  description: '住的敘述'
 - name: '行'
+  description: '行的敘述'
 - name: '育'
+  description: '育的敘述'
 - name: '樂'
+  description: '樂的敘述'

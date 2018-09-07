@@ -1,7 +1,19 @@
 ---
-- cate_id: 1
-  cate_detail_id: 1
-  description: 'EX:日式、台式'
-- name: '餐廳禮儀'
-  care_id: 1
-  description: 'EX:法式餐桌禮儀大不同'  
+- cate: 食
+  source: 日本綜合
+  content: 日本天婦羅好吃嗎？
+- cate: 衣
+  source: 日本綜合
+  content: uniqlo的素Ｔ多少錢？
+- cate: 住
+  source: 日本綜合
+  content: 日本房價如何？
+- cate: 行
+  source: 日本綜合
+  content: 東京到京都大概要多久？
+- cate: 育
+  source: 小學數學
+  content: 我們有5支筆，給了小明1支後，還會剩幾支筆？
+- cate: 樂
+  source: 日本綜合
+  content: 日本哪些景點好玩？
