@@ -14,8 +14,8 @@ module Howtosay
       routing.on 'register' do
         # GET api/v1/accounts/register
         routing.get do
-          rp = Registerpage.new()
-          rp ? rp.to_json : raise('rp not found')
+          info = Registerpage.new()
+          info ? info.to_json : raise('info not found')
         rescue StandardError => error
           routing.halt 404, { message: error.message }.to_json
         end
@@ -32,8 +32,15 @@ module Howtosay
       end
 
       # POST api/v1/accounts
+      # 目前 admin 暫定 false 不會用到
       routing.post do
+        status = System.first
         new_data = JSON.parse(routing.body.read)
+        new_data.merge!(
+          can_rewrite: status.can_rewrite,
+          can_grade: status.can_grade,
+          admin: false
+        )
         new_account = Account.new(new_data)
         raise('Could not save account') unless new_account.save
 
