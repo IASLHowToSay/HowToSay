@@ -11,6 +11,16 @@ module Howtosay
         routing.route('authenticate', 'accounts')
       end
 
+      routing.on 'register' do
+        # GET api/v1/accounts/register
+        routing.get do
+          rp = Registerpage.new()
+          rp ? rp.to_json : raise('rp not found')
+        rescue StandardError => error
+          routing.halt 404, { message: error.message }.to_json
+        end
+      end
+
       routing.on String do |email|
         # GET api/v1/accounts/[email]
         routing.get do
@@ -20,7 +30,6 @@ module Howtosay
           routing.halt 404, { message: error.message }.to_json
         end
       end
-
 
       # POST api/v1/accounts
       routing.post do

@@ -2,7 +2,8 @@
 
 Sequel.seed(:development) do
   def run
-    puts 'Seeding organizations, cates, details, sources, questions'
+    puts 'Seeding system, organizations, cates, details, sources, questions'
+    create_system
     create_organizations
     create_cates
     create_details
@@ -13,11 +14,18 @@ end
   
 require 'yaml'
 DIR = File.dirname(__FILE__)
+SYSTEM_INFO = YAML.load_file("#{DIR}/system_seeds.yml")
 ORGANIZATIONS_INFO = YAML.load_file("#{DIR}/organization_seeds.yml")
 CATES_INFO = YAML.load_file("#{DIR}/cate_seeds.yml")
 DETAILS_INFO = YAML.load_file("#{DIR}/detail_seeds.yml")
 SOURCES_INFO = YAML.load_file("#{DIR}/source_seeds.yml")
 QUESTIONS_INFO = YAML.load_file("#{DIR}/question_seeds.yml")
+
+def create_system
+  SYSTEM_INFO.each do |system_info|
+    Howtosay::System.create(system_info)
+  end
+end
 
 def create_organizations
   ORGANIZATIONS_INFO.each do |organization_info|

@@ -51,6 +51,7 @@ namespace :db do
 
   task :reset_seeds => [:setup, :load_models] do
     app.DB[:schema_seeds].delete if app.DB.tables.include?(:schema_seeds)
+    Howtosay::System.dataset.destroy
     Howtosay::Organization.dataset.destroy
     Howtosay::Question.dataset.destroy
     Howtosay::Detail.dataset.destroy

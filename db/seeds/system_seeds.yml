@@ -1,0 +1,5 @@
+---
+- can_register: true
+  can_rewrite: false
+  can_grade: false
+  description: '歡迎來到 how to say'
