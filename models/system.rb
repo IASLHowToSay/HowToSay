@@ -12,10 +12,12 @@ module Howtosay
     def to_h
         {
           type: 'system',
-          can_register: can_register,
           can_rewrite: can_rewrite,
+          rewrite_amount: rewrite_amount,
+          rewrite_description: rewrite_description,
           can_grade: can_grade,
-          description: description
+          grade_amount: grade_amount,
+          grade_description: grade_description
         }
     end
   
