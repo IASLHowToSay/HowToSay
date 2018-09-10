@@ -7,12 +7,14 @@ module Howtosay
     route('accounts') do |routing|
       @account_route = "#{@api_root}/accounts"
       
+      # 登入
       routing.on 'authenticate' do 
         routing.route('authenticate', 'accounts')
       end
 
       routing.on 'register' do
         # GET api/v1/accounts/register
+        # 顯示註冊頁面
         routing.get do
           info = Registerpage.new()
           info ? info.to_json : raise('info not found')
@@ -32,6 +34,7 @@ module Howtosay
       end
 
       # POST api/v1/accounts
+      # 註冊帳號
       # 目前 admin 暫定 false 不會用到
       routing.post do
         status = System.first

@@ -9,7 +9,7 @@ module Howtosay
       @home_route = "#{@api_root}/home"
       cates = Cate.all
       s = System.first
-      a = Account.first
+      puts cates
       s.to_json
     rescue StandardError => error
       routing.halt 404, { message: error.message }.to_json

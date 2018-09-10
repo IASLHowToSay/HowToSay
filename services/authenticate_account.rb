@@ -13,9 +13,9 @@ module Howtosay
     end
   
     # Find account and check password
+    # 登入比對
     class AuthenticateAccount
       def self.call(credentials)
-        puts credentials
         account = Account.first(email: credentials[:email])
         # account.password?(credentials[:password]) -> true or false
         account.password?(credentials[:password]) ? account : raise

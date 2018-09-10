@@ -7,11 +7,10 @@ module Howtosay
   class Api < Roda
     route('authenticate', 'accounts') do |routing|
       # POST /api/v1/accounts/authenticate
+      # 登入
       routing.post do
         credentials = JsonRequestBody.parse_symbolize(request.body.read)
         auth_account = AuthenticateAccount.call(credentials)
-        puts "登入："
-        puts auth_account.to_json
         auth_account.to_json
       rescue UnauthorizedError => error
         puts [error.class, error.message].join ': '
