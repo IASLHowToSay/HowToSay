@@ -10,6 +10,15 @@ module Howtosay
     one_to_many :questions
     plugin :timestamps
 
+    def to_h
+      {
+        type: 'cate',
+        id: id,
+        name: name,
+        description: description
+      }
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
       JSON(
