@@ -58,17 +58,22 @@ def create_sources
 end
 
 def create_questions
-    QUESTIONS_INFO.each do |question_info|
-      cate = Howtosay::Cate.first(name: question_info['cate'])
-      source = Howtosay::Source.first(name: question_info['source'])
-      question ={
-        cate_id: cate.id,
-        source_id: source.id,
-        content: question_info['content']
-      }
-      Howtosay::Question.create(question)
-    end
+  system = Howtosay::System.first()
+  rewrite_people = system.rewrite_people
+  grade_people = system.grade_people
+  QUESTIONS_INFO.each do |question_info|
+    cate = Howtosay::Cate.first(name: question_info['cate'])
+    source = Howtosay::Source.first(name: question_info['source'])
+    question ={
+      cate_id: cate.id,
+      source_id: source.id,
+      content: question_info['content'],
+      rewrite_people: rewrite_people,
+      grade_people: grade_people
+    }
+    Howtosay::Question.create(question)
   end
+end
 
 # def create_owned_projects
 #     OWNER_INFO.each do |owner|

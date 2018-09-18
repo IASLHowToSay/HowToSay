@@ -10,7 +10,9 @@ Sequel.migration do
       Integer :cate_id, null: false
       Integer :source_id, null: false
       String :content, null: false 
-     
+      Integer :rewrite_people
+      Integer :grade_people
+
       DateTime :created_at
       DateTime :updated_at
 
