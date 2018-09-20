@@ -28,13 +28,22 @@ module Howtosay
         # 測試分配題號
         routing.post do
           wtask = []
-          Howtosay::Question.each do |q| 
-            if q.rewrite_people > 0 && wtask.length < 50
-
-            else
-              break
-            end
-          end
+          account = Howtosay::Account.first()
+          question = Howtosay::Question.first()
+          t ={
+            type: 1,
+            account_id: account.id,
+            question_id: question.id,
+            sequence: 1,
+            complete: true}
+          Howtosay::Task.create(t)
+          # Howtosay::Question.each do |q| 
+          #   if q.rewrite_people > 0 && wtask.length < 50
+              
+          #   else
+          #     break
+          #   end
+          # end
           wtask.each do |w|
             puts w.content
           end

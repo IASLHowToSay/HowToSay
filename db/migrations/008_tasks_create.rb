@@ -4,20 +4,18 @@ require 'sequel'
 Sequel.migration do
     change do
         create_table(:tasks) do
-
-            foreign_key :account_id, table: :accounts, :null=>false
-            foreign_key :question_id, :questions, :null=>false
-
-            primary_key [:account_id, :question_id, :type]
             
-            Integer :type, default: 0 # 0 is rewrite, 1 is grade
+            primary_key :id
+            Integer :type, default: 0
             Integer :sequence
+            Integer :question_id
+            Integer :account_id
             Boolean :complete , default: false
-            
             DateTime :created_at
             DateTime :updated_at
 
-            index [:account_id, :question_id, :type]
+            foreign_key [:question_id], table: :questions
+            foreign_key [:account_id], table: :accounts
         end
     end
 end

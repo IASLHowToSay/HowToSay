@@ -8,10 +8,9 @@ module Howtosay
   class Question < Sequel::Model
     many_to_one :cate
     many_to_one :source
-    one_to_many :goodquestions
-    one_to_many :gooddetails
-
-
+    one_to_many :tasks
+    
+    plugin :association_dependencies, tasks: :destroy
     plugin :timestamps
 
     # rubocop:disable MethodLength
