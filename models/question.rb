@@ -11,6 +11,7 @@ module Howtosay
     one_to_many :goodquestions
     one_to_many :gooddetails
 
+
     plugin :timestamps
 
     # rubocop:disable MethodLength
@@ -21,7 +22,9 @@ module Howtosay
           id: id,
           cate: cate,
           source: source,
-          content: content
+          content: content,
+          rewrite_people: rewrite_people,
+          grade_people: grade_people
         }, options
       )
     end

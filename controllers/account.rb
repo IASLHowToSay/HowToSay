@@ -23,6 +23,25 @@ module Howtosay
         end
       end
 
+      routing.on 'allocate_test' do
+        # GET api/v1/accounts/allocate_test
+        # 測試分配題號
+        routing.post do
+          wtask = []
+          Howtosay::Question.each do |q| 
+            if q.rewrite_people > 0 && wtask.length < 50
+
+            else
+              break
+            end
+          end
+          wtask.each do |w|
+            puts w.content
+          end
+          {'testing':'good'}.to_json
+        end
+      end
+
       routing.on String do |email|
         # GET api/v1/accounts/[email]
         routing.get do

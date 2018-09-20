@@ -14,9 +14,11 @@ module Howtosay
           type: 'system',
           can_rewrite: can_rewrite,
           rewrite_amount: rewrite_amount,
+          rewrite_people: rewrite_people,
           rewrite_description: rewrite_description,
           can_grade: can_grade,
           grade_amount: grade_amount,
+          grade_people: grade_people,
           grade_description: grade_description
         }
     end
