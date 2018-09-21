@@ -8,8 +8,14 @@ module Howtosay
     plugin :halt
     plugin :multi_route
 
+    MUTEX = Mutex.new
+
     def secure_request?(routing)
       routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
+    end
+
+    def sync
+      MUTEX.synchronize{yield}
     end
 
     route do |routing|

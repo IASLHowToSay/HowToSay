@@ -8,6 +8,7 @@ module Howtosay
   class Organization < Sequel::Model
     
     one_to_many :accounts
+    plugin :association_dependencies, accounts: :destroy
 
     plugin :timestamps
     

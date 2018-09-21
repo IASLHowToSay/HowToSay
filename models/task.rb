@@ -9,7 +9,7 @@ module Howtosay
     
     many_to_one :account
     many_to_one :question
-
+    
     plugin :timestamps
     
     def to_h

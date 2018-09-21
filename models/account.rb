@@ -9,7 +9,7 @@ module Howtosay
 
     many_to_one :organization
     one_to_many :tasks
-    
+
     plugin :association_dependencies, tasks: :destroy
     plugin :timestamps, update_on_create: true
 

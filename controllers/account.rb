@@ -23,31 +23,12 @@ module Howtosay
         end
       end
 
-      routing.on 'allocate_test' do
-        # GET api/v1/accounts/allocate_test
-        # 測試分配題號
+      routing.on 'destroy_account' do
+        # GET api/v1/accounts/destroy_account
         routing.post do
-          wtask = []
           account = Howtosay::Account.first()
-          question = Howtosay::Question.first()
-          t ={
-            type: 1,
-            account_id: account.id,
-            question_id: question.id,
-            sequence: 1,
-            complete: true}
-          Howtosay::Task.create(t)
-          # Howtosay::Question.each do |q| 
-          #   if q.rewrite_people > 0 && wtask.length < 50
-              
-          #   else
-          #     break
-          #   end
-          # end
-          wtask.each do |w|
-            puts w.content
-          end
-          {'testing':'good'}.to_json
+          account.destroy
+          {'testing':'destroy good'}.to_json
         end
       end
 
@@ -63,28 +44,37 @@ module Howtosay
 
       # POST api/v1/accounts
       # 註冊帳號
-      # 目前 admin 暫定 false 不會用到
       routing.post do
-        status = System.first
-        new_data = JSON.parse(routing.body.read)
-        new_data.merge!(
-          can_rewrite: status.can_rewrite,
-          can_grade: status.can_grade,
-          admin: false
-        )
-        new_account = Account.new(new_data)
-        raise('Could not save account') unless new_account.save
-
-        response.status = 201
-        response['Location'] = "#{@account_route}/#{new_account.id}"
-        { message: 'Account saved', data: new_account }.to_json
+        # 建立新帳號
+        sync{
+          status = System.first
+          new_data = JSON.parse(routing.body.read)
+          new_data.merge!(
+            can_rewrite: status.can_rewrite,
+            can_grade: status.can_grade,
+            admin: false # 之後有後台要改
+          )
+          new_account = Account.new(new_data)
+          raise('Could not save account') unless new_account.save
+          # 給予題目
+          AllocateQuestion.new(status, new_account).call()
+          response.status = 201
+          response['Location'] = "#{@account_route}/#{new_account.id}"
+          if status.can_rewrite && !status.can_grade
+            { message: "Account saved, and allocate rewrite question: #{status.rewrite_amount} sucessful!", account_data: new_account }.to_json
+          end
+          if !status.can_rewrite && status.can_grade
+            { message: "Account saved, and allocate grade question: #{status.grade_amount} sucessful!", account_data: new_account }.to_json
+          end
+        }
+      rescue FailedAllocation => error
+        routing.halt 400, { message: error.message }.to_json
       rescue Sequel::MassAssignmentRestriction
         routing.halt 400, { message: 'Illegal Request' }.to_json
       rescue StandardError => error
         puts error.inspect
         routing.halt 500, { message: error.message }.to_json
       end
-
     end
   end
 end
