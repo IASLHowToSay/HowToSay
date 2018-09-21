@@ -19,9 +19,9 @@ module Howtosay
       end
     end
 
-    def rewrite_task()
+    def rewrite_task(questions)
       task =[]
-      Howtosay::Question.each do |question|
+      questions.each do |question|
         # 當問題還需要人作答及還沒領完單個人的份量
         if question.rewrite_people > 0 && task.length < @task_amount
           # 加入rewrite工作
@@ -47,9 +47,9 @@ module Howtosay
       raise(FailedAllocation, "Cant allocate the rewrite question for #{@account.name}")
     end
 
-    def grade_task()
+    def grade_task(questions)
       task =[]
-      Howtosay::Question.each do |question|
+      questions.each do |question|
         # 當問題還需要人作答及還沒領完單個人的份量
         if question.grade_people > 0 && task.length < @task_amount
           # 加入grade工作
@@ -77,7 +77,11 @@ module Howtosay
 
     def call()
       if @task_type == 0
-        rewrite_task()
+        categories = Howtosay::Cate.all
+        categories.each do |cate|
+          questions = Howtosay::Question.where(cate_id: cate.id)
+          rewrite_task(questions)
+        end
       else
         grade_task()
       end

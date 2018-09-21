@@ -1,13 +1,19 @@
 ---
 - name: '食'
   description: '食的敘述'
+  for_teacher: false
 - name: '衣'
   description: '衣的敘述'
+  for_teacher: false
 - name: '住'
   description: '住的敘述'
+  for_teacher: false
 - name: '行'
   description: '行的敘述'
+  for_teacher: false
 - name: '育'
   description: '育的敘述'
+  for_teacher: true
 - name: '樂'
   description: '樂的敘述'
+  for_teacher: false

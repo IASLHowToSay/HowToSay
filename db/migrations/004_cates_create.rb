@@ -9,7 +9,7 @@ Sequel.migration do
 
       String :name, unique: true, null: false
       String :description
-
+      Boolean :for_teacher # for teacher or student
       DateTime :created_at
       DateTime :updated_at
       

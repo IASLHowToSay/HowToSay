@@ -15,6 +15,7 @@ module Howtosay
         type: 'cate',
         id: id,
         name: name,
+        for_teacher: for_teacher,
         description: description
       }
     end
@@ -26,6 +27,7 @@ module Howtosay
           type: 'cate',
           id: id,
           name: name,
+          for_teacher: for_teacher,
           description: description
         }, options
       )
