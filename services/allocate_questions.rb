@@ -29,6 +29,7 @@ module Howtosay
           task_data ={
             type: @task_type,
             sequence: question_sequence,
+            cate_id: question.cate_id,
             question_id: question.id,
             account_id: @account.id,
             complete: false
@@ -58,6 +59,7 @@ module Howtosay
             type: @task_type,
             sequence: question_sequence,
             question_id: question.id,
+            cate_id: question.cate_id,
             account_id: @account.id,
             complete: false
           }
@@ -76,14 +78,29 @@ module Howtosay
     end
 
     def call()
+      categories = Howtosay::Cate.all
       if @task_type == 0
-        categories = Howtosay::Cate.all
         categories.each do |cate|
-          questions = Howtosay::Question.where(cate_id: cate.id)
-          rewrite_task(questions)
+          if @account.teacher && cate.for_teacher
+            questions = Howtosay::Question.where(cate_id: cate.id)
+            rewrite_task(questions)
+          end
+          if !@account.teacher && !cate.for_teacher
+            questions = Howtosay::Question.where(cate_id: cate.id)
+            rewrite_task(questions)
+          end
         end
       else
-        grade_task()
+        categories.each do |cate|
+          if @account.teacher && cate.for_teacher
+            questions = Howtosay::Question.where(cate_id: cate.id)
+            grade_task(questions)
+          end
+          if !@account.teacher && !cate.for_teacher
+            questions = Howtosay::Question.where(cate_id: cate.id)
+            grade_task(questions)
+          end
+        end
       end
     end
   end
