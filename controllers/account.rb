@@ -45,8 +45,9 @@ module Howtosay
       # POST api/v1/accounts
       # 註冊帳號
       routing.post do
-        # 建立新帳號
+        # 處理同步的問題
         sync{
+          # 建立新帳號
           status = System.first
           new_data = JSON.parse(routing.body.read)
           new_data.merge!(

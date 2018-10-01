@@ -15,6 +15,7 @@ module Howtosay
     def to_h
         {
           type: 'task',
+          cate_id: cate_id,
           account_id: account_id,
           question_id: question_id,
           sequence: sequence,
