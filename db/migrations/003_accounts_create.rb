@@ -15,6 +15,7 @@ Sequel.migration do
       Boolean :teacher # is teacher or student
       Boolean :can_rewrite
       Boolean :can_grade
+      Boolean :activate
       Boolean :admin
       
       DateTime :created_at

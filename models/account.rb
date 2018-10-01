@@ -34,6 +34,7 @@ module Howtosay
           teacher: teacher,
           can_rewrite: can_rewrite,
           can_grade: can_grade,
+          activate: activate,
           admin: admin
         }
     end

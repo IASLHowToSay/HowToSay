@@ -6,6 +6,9 @@ gem 'roda'
 gem 'puma'
 gem 'json'
 
+# Communication
+gem 'http'
+
 # Configuration
 gem 'econfig'
 gem 'rake'
