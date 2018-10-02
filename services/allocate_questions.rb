@@ -7,23 +7,24 @@ module Howtosay
   class AllocateQuestion
 
     def initialize(status, account)
-      @task_type, @task_amount = decide_status(status)
+      # task_people 每題需要多少人, task_amount 每個人需要做多少題
+      @task_type, @require_people, @require_questions = decide_status(status)
       @account = account
     end
 
     def decide_status(status)
       if status.can_rewrite && !status.can_grade
-        return 0, status.rewrite_amount
+        return 0, status.rewrite_people, status.rewrite_amount
       else
-        return 1, status.grade_amount
+        return 1, status.grade_people, status.grade_amount
       end
     end
 
     def rewrite_task(questions)
       task =[]
       questions.each do |question|
-        # 當問題還需要人作答及還沒領完單個人的份量
-        if question.rewrite_people > 0 && task.length < @task_amount
+        # 此題尚未到達需求人數
+        if question.rewrite_people < @require_people
           # 加入rewrite工作
           question_sequence = task.length + 1  
           task_data ={
@@ -36,40 +37,42 @@ module Howtosay
           }
           t = Howtosay::Task.create(task_data)
           task << t
-          # 把questions 減 rewrite_people
-          people = question.rewrite_people - 1
+          # 把questions + 1
+          people = question.rewrite_people + 1
           question.update(rewrite_people: people)
         end
-        if task.length == @task_amount
+        # 達成個人的份量
+        if task.length == @require_questions
           break
         end
       end
     rescue StandardError
-      raise(FailedAllocation, "Cant allocate the rewrite question for #{@account.name}")
+      raise(FailedAllocation, "Can\'t allocate the rewrite question for #{@account.name}")
     end
 
     def grade_task(questions)
       task =[]
       questions.each do |question|
-        # 當問題還需要人作答及還沒領完單個人的份量
-        if question.grade_people > 0 && task.length < @task_amount
-          # 加入grade工作
+        # 此題尚未到達需求人數
+        if question.grade_people < @require_people
+        # 加入 grade 工作
           question_sequence = task.length + 1  
           task_data ={
             type: @task_type,
             sequence: question_sequence,
-            question_id: question.id,
             cate_id: question.cate_id,
+            question_id: question.id,
             account_id: @account.id,
             complete: false
           }
           t = Howtosay::Task.create(task_data)
           task << t
-          # 把questions 減 grade_people
-          people = question.grade_people - 1
+          # 把questions + 1
+          people = question.grade_people + 1
           question.update(grade_people: people)
         end
-        if task.length == @task_amount
+        # 達成個人的份量
+        if task.length == @require_questions
           break
         end
       end

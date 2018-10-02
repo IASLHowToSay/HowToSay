@@ -67,24 +67,27 @@ module Howtosay
       # 註冊帳號
       routing.post do
         # 建立新帳號
-        status = System.first
-        new_data = JSON.parse(routing.body.read)
-        new_data.merge!(
-          can_rewrite: status.can_rewrite,
-          can_grade: status.can_grade,
-          admin: false, # 之後有後台要改
-          activate: false #一開始部會開通，除非分配完題目
-        )
-        new_account = Account.new(new_data)
-        raise('Could not save account') unless new_account.save
+        sync{
+          status = System.first
+          new_data = JSON.parse(routing.body.read)
+          new_data.merge!(
+            can_rewrite: status.can_rewrite,
+            can_grade: status.can_grade,
+            admin: false, # 之後有後台要改
+            activate: false #一開始部會開通，除非分配完題目
+          )
+          new_account = Account.new(new_data)
+          raise('Could not save account') unless new_account.save
         
-        # 發送分配訊號
-        email = new_account.email
-        address = "http://localhost:9292/api/v1/accounts/#{email}/allocate_questions"
-        s_response = SendAllocateQuestionsRequest.new(address).call()
-
-        response.status = 201
-        response['Location'] = "#{@account_route}/#{new_account.id}"
+          # 發送分配訊號
+          AllocateQuestion.new(status, new_account).call()
+          new_account.update(activate: true)
+          # response.status = 201
+          # response['Location'] = "#{@account_route}/#{account.email}/allocate_questions"
+          
+          response.status = 201
+          response['Location'] = "#{@account_route}/#{new_account.id}"
+        }
       rescue Sequel::MassAssignmentRestriction
         routing.halt 400, { message: 'Illegal Request' }.to_json
       rescue StandardError => error

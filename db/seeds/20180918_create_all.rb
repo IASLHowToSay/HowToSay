@@ -59,8 +59,8 @@ end
 
 def create_questions
   system = Howtosay::System.first()
-  rewrite_people = system.rewrite_people
-  grade_people = system.grade_people
+  # rewrite_people = system.rewrite_people
+  # grade_people = system.grade_people
   QUESTIONS_INFO.each do |question_info|
     cate = Howtosay::Cate.first(name: question_info['cate'])
     source = Howtosay::Source.first(name: question_info['source'])
@@ -68,8 +68,8 @@ def create_questions
       cate_id: cate.id,
       source_id: source.id,
       content: question_info['content'],
-      rewrite_people: rewrite_people,
-      grade_people: grade_people
+      rewrite_people: 0,
+      grade_people: 0
     }
     Howtosay::Question.create(question)
   end
