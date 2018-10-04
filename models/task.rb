@@ -2,6 +2,7 @@
 
 require 'json'
 require 'sequel'
+require_relative 'question'
 
 module Howtosay
   # Models a Task
@@ -17,7 +18,7 @@ module Howtosay
           type: 'task',
           cate_id: cate_id,
           account_id: account_id,
-          question_id: question_id,
+          question: Howtosay::Question.where(id: question_id).first,
           sequence: sequence,
           complete: complete
         }

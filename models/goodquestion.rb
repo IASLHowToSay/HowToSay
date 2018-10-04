@@ -11,16 +11,18 @@ module Howtosay
 
     plugin :timestamps
 
+    def to_h
+      {
+        type: 'goodquestion',
+        question_id: question_id,
+        writer_id: writer_id,
+        good: good
+      }
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
-      JSON(
-        {
-          type: 'goodquestion',
-          question_id: question_id,
-          writer_id: writer_id,
-          good: good
-        }, options
-      )
+      JSON(to_h, options)
     end
     # rubocop:enable MethodLength
   end

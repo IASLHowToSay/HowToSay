@@ -1,9 +1,9 @@
 ---
 - can_rewrite: true
   rewrite_amount: 100
-  rewrite_people: 5
-  rewrite_description: '歡迎來到 how to say，請開始改寫吧哈哈哈'
+  rewrite_people: 10
+  rewrite_description: '歡迎大家來到這，請大家開始換句話說。'
   can_grade: false
   grade_people: 3
   grade_amount: 100
-  grade_description: '歡迎來到 how to say，請開始評分吧哈哈哈'
+  grade_description: '歡迎大家來到這，請大家開始評分。'
