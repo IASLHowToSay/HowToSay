@@ -7,7 +7,7 @@ require_relative 'question'
 
 module Howtosay
   # Behaviors of the get cate page
-  class Rewritepage
+  class Labelpage
     def initialize(email, cate_id)
       # user name
       @account = Account.first(email: email)

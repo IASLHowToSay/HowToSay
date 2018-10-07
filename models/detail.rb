@@ -10,17 +10,19 @@ module Howtosay
 
     plugin :timestamps
 
+    def to_h
+      {
+        type: 'detail',
+        id: id,
+        name: name,
+        cate_id: cate_id,
+        description: description
+      }
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
-      JSON(
-        {
-          type: 'detail',
-          id: id,
-          name: name,
-          cate_id: cate_id,
-          description: description
-        }, options
-      )
+      JSON(to_h, options)
     end
     # rubocop:enable MethodLength
   end
