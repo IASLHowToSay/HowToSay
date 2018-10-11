@@ -82,9 +82,7 @@ module Howtosay
           # 發送分配訊號
           AllocateQuestion.new(status, new_account).call()
           new_account.update(activate: true)
-          # response.status = 201
-          # response['Location'] = "#{@account_route}/#{account.email}/allocate_questions"
-          
+ 
           response.status = 201
           response['Location'] = "#{@account_route}/#{new_account.id}"
         }

@@ -4,37 +4,76 @@ require 'roda'
 
 module Howtosay
   # Web controller for Howtosay API
-  # 給予是否為好問題:                POST api/v1/rewrite/goodquestion
-  # 顯示改寫階段標註是否為好問題的頁面: GET  api/v1/rewrite/[email]/[cate_id]/label
-  # 顯示改寫階段賦予小類別及改寫句子頁: GET  api/v1/rewrite/[email]/[cate_id]/sentence
+
+  # GET  api/v1/rewrite/[email]/[cate_id]/label
+  # GET  api/v1/rewrite/[email]/[cate_id]/sentence
+  # POST api/v1/rewrite/saveanswer
   class Api < Roda
     route('rewrite') do |routing|
       @rewrtie_route = "#{@api_root}/rewrite"
-      routing.on 'goodquestion' do
-        # label 階段 給予 question 是否為好的分類
-        # POST api/v1/rewrite/goodquestion
+      
+      routing.on 'saveanswer' do
+        # POST api/v1/rewrite/saveanswer
         routing.post do
           info = JsonRequestBody.parse_symbolize(request.body.read)
-          if Goodquestion.where(writer_id: info[:writer_id]).where(question_id: info[:question_id]).empty?
-            goodquestion = Goodquestion.create(info)
-          else
-            goodquestion = Goodquestion.where(writer_id: info[:writer_id]).where(question_id: info[:question_id]).first
-            goodquestion.update(info)
-          end
-          goodquestion ? goodquestion.to_json() : raise('goodquestion not found')
+          
+          # 存入 answer
+          answer_info ={
+            question_id: info[:question_id],
+            content: info[:sentence],
+            rewriter_id: info[:account_id]
+          }
+          answer = Answer.create(answer_info)
+          
+          # 存入 good_question
+          goodquestion_info ={
+            question_id: info[:question_id],
+            rewriter_id: info[:account_id],
+            good: true
+          } 
+          Goodquestion.create(goodquestion_info)
+
+          # 存入 good_detail
+          gooddetail_info ={
+            question_id: info[:question_id],
+            rewriter_id: info[:account_id],
+            detail_id: info[:detail_id]
+          } 
+          Gooddetail.create(gooddetail_info)
+          # 完成題目，更新 task
+          task = Task.where(id: info[:task_id]).first
+          task.update(complete: true)
+          
           response.status = 201
-          response['Location'] = "#{@rewrtie_route}/goodquestion"
+          response['Location'] = "#{@rewrtie_route}/saveanswer"
+
         rescue StandardError => error
           routing.halt 404, { message: error.message }.to_json
         end
       end
-      routing.on 'saveanswer' do
-        # POST api/v1/rewrite/saveanswer
+      
+      routing.on 'skip' do
         routing.post do
-          answer_info = JsonRequestBody.parse_symbolize(request.body.read)
-          puts answer_info
+          info = JsonRequestBody.parse_symbolize(request.body.read)
+          
+          badquestion_info ={
+            question_id: info[:question_id],
+            rewriter_id: info[:account_id],
+            good: false
+          }
+          Goodquestion.create(badquestion_info)
+          
+          # 完成題目，更新 task
+          task = Task.where(id: info[:task_id]).first
+          task.update(complete: true)
+
+          response.status = 201
+          response['Location'] = "#{@rewrtie_route}/skip"
+        rescue StandardError => error
+          routing.halt 404, { message: error.message }.to_json
         end
       end
+
       routing.on String do |email|
         routing.on String do |cate_id|
           routing.on 'label' do

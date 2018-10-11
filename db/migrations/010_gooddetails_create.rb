@@ -6,19 +6,19 @@ Sequel.migration do
   change do
     create_table(:gooddetails) do
       
-      foreign_key :question_id, :questions, :null=>false
-      foreign_key :writer_id, table: :accounts, :null=>false
-      foreign_key :detail_id, table: :details, :null=>false
+      primary_key :id
 
-      primary_key [:question_id, :writer_id]
+      Integer :question_id, null: false
+      Integer :rewriter_id, null: false
+      Boolean :detail_id, null: false
 
-      Boolean :good
+      foreign_key [:question_id], table: :questions
+      foreign_key [:rewriter_id], table: :accounts
+      foreign_key [:detail_id], table: :details
       
       DateTime :created_at
       DateTime :updated_at
       
-      index [:question_id, :writer_id]
-
     end
   end
 end

@@ -11,17 +11,19 @@ module Howtosay
       account = Account.first(email: email)
       all_task = Task.where(account_id: account.id).where(cate_id: cate_id)
       total = all_task.count
-      current_task = all_task.where(complete: false).order(Sequel.asc(:sequence)).first
-      details = Detail.where(cate_id: cate_id).all
-      details.map! do |d|
-        d.to_h
+      @current_task = all_task.where(complete: false).order(Sequel.asc(:sequence)).first
+      unless @current_task.nil?
+        details = Detail.where(cate_id: cate_id).all
+        details.map! {|d| d.to_h}
+        @current_task = @current_task.to_h.merge!(details: details)
+        @current_task = @current_task.to_h.merge!(total: total)
+      else
+        @current_task = nil
       end
-      @final = current_task.to_h.merge!(total: total)
-      @final = @final.to_h.merge!(details: details)
     end
 
     def to_json(options = {})
-      JSON(@final, options)
+      JSON(@current_task, options)
     end
   end
 end

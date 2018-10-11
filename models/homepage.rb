@@ -12,30 +12,39 @@ module Howtosay
     def initialize(email)
       # user name
       @account = Account.first(email)
-      @name = @account.name
-      @teacher = @account.teacher
+      @i_am_a_teacher = @account.teacher
+      
+      # 系統敘述
       status = System.first()
-      # system description, amount
       if status.can_rewrite == true && status.can_grade == false
         @description = status.rewrite_description
       else
         @description = status.grade_description
       end
-      # cate
+      
+      # 每個類別的進度
       @cates = Cate.all
       @cates.map! do |c|
-        amount = Task.where(account_id: @account.id).where(cate_id: c.id).count
-        if c.name == "育"
-          @teacher ? c.to_h.merge!(amount: amount) : c.to_h.merge!(amount: 0)
+        # 若 不是老師 i_am_a_teacher==false ，此類 for_teacher== false -> 學生且學生題目
+        # 若 是老師 i_am_a_teacher==true ，此類 for_teacher== true -> 老師且老師題目
+        if c.for_teacher == @i_am_a_teacher
+          total = Task.where(account_id: @account.id).where(cate_id: c.id).count
+          finish = Task.where(account_id: @account.id).where(cate_id: c.id).where(complete: true).count
+          unless finish == total
+            progress = "#{finish}/#{total}"
+            c.to_h.merge!(progress: progress)
+          else
+            c.to_h.merge!(progress: '恭喜完成')
+          end
         else
-          c.to_h.merge!(amount: amount)
+          c.to_h.merge!(progress: '不需作答')
         end
       end
     end
 
     def to_json(options = {})
       @info = {
-        user: @name,
+        user: @account,
         description: @description,
         cates: @cates
       }

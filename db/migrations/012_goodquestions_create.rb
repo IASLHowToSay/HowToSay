@@ -9,11 +9,11 @@ Sequel.migration do
       primary_key :id
 
       Integer :question_id, null: false
-      Integer :writer_id, null: false
+      Integer :rewriter_id, null: false
       Boolean :good
 
       foreign_key [:question_id], :questions
-      foreign_key [:writer_id], table: :accounts
+      foreign_key [:rewriter_id], table: :accounts
       
       DateTime :created_at
       DateTime :updated_at

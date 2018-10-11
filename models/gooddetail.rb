@@ -19,7 +19,6 @@ module Howtosay
           question_id: question_id,
           writer_id: writer_id,
           detail_id: detail_id,
-          good: good
         }, options
       )
     end

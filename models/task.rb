@@ -16,6 +16,7 @@ module Howtosay
     def to_h
         {
           type: 'task',
+          task_id: id,
           cate_id: cate_id,
           account_id: account_id,
           question: Howtosay::Question.where(id: question_id).first,
