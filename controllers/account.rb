@@ -49,7 +49,12 @@ module Howtosay
               account = Account.first(email: email)
               raise('Account not found') unless account
               status = System.first
-              AllocateQuestion.new(status, account).call()
+              if status.can_rewrite && !status.can_grade
+                AllocateRewriteQuestion.new(status, account).call()
+              elsif !status.can_rewrite && status.can_grade
+                puts '~~~~~~~~~~'
+                AllocateGradeQuestion.new(status, account).call()
+              end
               account.update(activate: true)
               response.status = 201
               response['Location'] = "#{@account_route}/#{account.email}/allocate_questions"
@@ -80,7 +85,13 @@ module Howtosay
           raise('Could not save account') unless new_account.save
         
           # 發送分配訊號
-          AllocateQuestion.new(status, new_account).call()
+          if status.can_rewrite && !status.can_grade
+            AllocateRewriteQuestion.new(status, new_account).call()
+          elsif !status.can_rewrite && status.can_grade
+            AllocateGradeQuestion.new(status, new_account).call()
+          end
+          # AllocateQuestion.new(status, new_account).call()
+
           new_account.update(activate: true)
  
           response.status = 201

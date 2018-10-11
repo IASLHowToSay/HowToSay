@@ -19,10 +19,12 @@ module Howtosay
           good_answers.each do |good_answer|
             Goodanswer.create(good_answer)
           end
+
           task = Task.where(id: info[:task_id]).first
-          task.update(complete: true)  
+          task.update(complete: true)
+
           response.status = 201
-          response['Location'] = "#{@rewrtie_route}/saveanswer"
+          response['Location'] = "#{@grade_route}/saveanswer"
 
         rescue StandardError => error
           routing.halt 404, { message: error.message }.to_json

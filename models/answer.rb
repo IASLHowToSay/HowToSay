@@ -19,7 +19,7 @@ module Howtosay
           id: id,
           question: question,
           contnet: content,
-          writer: Howtosay::Account.where(id:writer_id).first
+          rewriter: Howtosay::Account.where(id:rewriter_id).first
         }, options
       )
     end

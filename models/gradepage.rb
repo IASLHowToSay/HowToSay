@@ -14,6 +14,7 @@ module Howtosay
       @all_task = Task.where(account_id: @account.id).where(cate_id: cate_id)
       @total = @all_task.count
       @current_task = @all_task.where(complete: false).order(Sequel.asc(:sequence)).first
+
       # 為了防止 grade 不需作答的類別出錯 因為這個 @current_task.question_id
       unless @current_task.nil?
         answers = Answer.where(question_id: @current_task.question_id).all
