@@ -17,14 +17,15 @@ module Howtosay
         routing.post do
           info = JsonRequestBody.parse_symbolize(request.body.read)
           
-          # 存入 answer
-          answer_info ={
-            question_id: info[:question_id],
-            content: info[:sentence],
-            rewriter_id: info[:account_id]
-          }
-          answer = Answer.create(answer_info)
-          
+          unless info[:sentence].gsub(" ","") == ""
+            # 存入 answer
+            answer_info ={
+              question_id: info[:question_id],
+              content: info[:sentence],
+              rewriter_id: info[:account_id]
+            }
+            answer = Answer.create(answer_info)
+          end
           # 存入 good_question
           goodquestion_info ={
             question_id: info[:question_id],
@@ -40,6 +41,7 @@ module Howtosay
             detail_id: info[:detail_id]
           } 
           Gooddetail.create(gooddetail_info)
+          
           # 完成題目，更新 task
           task = Task.where(id: info[:task_id]).first
           task.update(complete: true)

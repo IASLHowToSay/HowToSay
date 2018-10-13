@@ -17,59 +17,32 @@ module Howtosay
   
     def grade_task(questions)
       question_sequence = 0
-      question_limit = 0
+      question_accum = 0
       questions.each do |question|
         # 此題尚未到達需求人數
-        if question.grade_people < @require_people
-          question_limit = question_limit + 1
-          # 查看是否是個 good question
-          good_question = Goodquestion.where(question_id: question.id)
-          vote_sum = good_question.count
-          puts "vote_sum: #{vote_sum}"
-          vote_good = good_question.where(good: true).count
-          puts "vote_good #{vote_good}"
-          # 偶數人投票
-          if vote_sum%2 == 0 && vote_sum != 0
-            if vote_good >= (vote_sum/2)
-              question_sequence = question_sequence + 1  
-              task_data ={
-                type: 1,
-                sequence: question_sequence,
-                cate_id: question.cate_id,
-                question_id: question.id,
-                account_id: @account.id,
-                complete: false
-              }
-              Howtosay::Task.create(task_data)
+        if question.grade_people < @require_people 
+          question_accum = question_accum + 1
+          # 查看是否有answer
+          unless Answer.where(question_id: question.id).empty?
+            question_sequence = question_sequence + 1  
+            task_data ={
+              type: 1,
+              sequence: question_sequence,
+              cate_id: question.cate_id,
+              question_id: question.id,
+              account_id: @account.id,
+              complete: false
+            }
+            Howtosay::Task.create(task_data)
+
+            people = question.grade_people + 1
+            question.update(grade_people: people)
+            #  若題目沒了，for 就會結束了，所以不會有空題的問題
+            if question_accum == @require_questions
+              break
             end
-          # 奇數投票
-          else
-            puts (vote_sum/2)
-            if vote_good > (vote_sum/2)
-              question_sequence = question_sequence + 1  
-              task_data ={
-                type: 1,
-                sequence: question_sequence,
-                cate_id: question.cate_id,
-                question_id: question.id,
-                account_id: @account.id,
-                complete: false
-              }
-              Howtosay::Task.create(task_data)
-            end
-          end
-          # 計算 是否到達 require_questions 含 bad question 未放入 task 中
-          # 把questions + 1
-          people = question.grade_people + 1
-          question.update(grade_people: people)
-          if question_limit == @require_questions
-            break
           end
         end
-      #   # 達成個人的份量
-      #   if task.length == @require_questions
-      #     break
-      #   end
       end
     rescue StandardError
       raise(FailedGradeAllocation, "Cant allocate the grade question for #{@account.name}")

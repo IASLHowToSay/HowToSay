@@ -40,32 +40,6 @@ module Howtosay
         rescue StandardError => error
           routing.halt 404, { message: error.message }.to_json
         end
-       
-        routing.on 'allocate_questions' do
-          # POST api/v1/accounts/[email]/allocate_questions
-          routing.post do
-          # 給予題目並將使用者的activate激活
-            sync{
-              account = Account.first(email: email)
-              raise('Account not found') unless account
-              status = System.first
-              if status.can_rewrite && !status.can_grade
-                AllocateRewriteQuestion.new(status, account).call()
-              elsif !status.can_rewrite && status.can_grade
-                puts '~~~~~~~~~~'
-                AllocateGradeQuestion.new(status, account).call()
-              end
-              account.update(activate: true)
-              response.status = 201
-              response['Location'] = "#{@account_route}/#{account.email}/allocate_questions"
-            }
-          rescue Sequel::MassAssignmentRestriction
-            routing.halt 400, { message: 'Illegal Request' }.to_json
-          rescue StandardError => error
-            puts error.inspect
-            routing.halt 500, { message: error.message }.to_json
-          end
-        end
       end
 
       # POST api/v1/accounts
@@ -90,7 +64,6 @@ module Howtosay
           elsif !status.can_rewrite && status.can_grade
             AllocateGradeQuestion.new(status, new_account).call()
           end
-          # AllocateQuestion.new(status, new_account).call()
 
           new_account.update(activate: true)
  
@@ -104,7 +77,7 @@ module Howtosay
         routing.halt 500, { message: error.message }.to_json
       rescue SendAllocateQuestionsRequestError => error
         puts [error.class, error.message].join ': '
-        routing.halt '400', { message: 'Can\'t send the allocation' }.to_json
+        routing.halt 400, { message: 'Can\'t send the allocation' }.to_json
       end
     end
   end
