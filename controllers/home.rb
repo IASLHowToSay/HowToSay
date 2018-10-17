@@ -10,10 +10,12 @@ module Howtosay
       routing.on String do |email|
         # GET api/v1/home/[email]
         routing.get do
-          homepage = Homepage.new(email: email)
-          homepage ? homepage.to_json() : raise('Homepage not found')
-        rescue StandardError => error
-          routing.halt 404, { message: error.message }.to_json
+          begin
+            homepage = Homepage.new(email: email)
+            homepage ? homepage.to_json() : raise('Homepage not found')
+          rescue StandardError => error
+            routing.halt 404, { message: error.message }.to_json
+          end
         end
       end
     end
