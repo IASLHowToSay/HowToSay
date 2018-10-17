@@ -19,6 +19,9 @@ gem 'pry'
 # Security
 gem 'rbnacl-libsodium'
 
+# Sendgrid
+gem 'sendgrid-ruby'
+
 # Database
 gem 'sequel'
 gem 'hirb'

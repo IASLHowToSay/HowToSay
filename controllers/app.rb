@@ -23,7 +23,7 @@ module Howtosay
       
       secure_request?(routing) ||
         routing.halt(403, { message: 'TLS/SSL Requested' }.to_json)
-
+      
       routing.root do
         { message: 'HowtosayAPI up at /api/v1' }.to_json
       end

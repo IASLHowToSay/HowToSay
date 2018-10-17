@@ -7,7 +7,7 @@ Sequel.migration do
     create_table(:details) do
       primary_key :id
 
-      String :name, unique: true, null: false
+      String :name, null: false
       Integer :cate_id, null: false
       String :description
 

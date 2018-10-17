@@ -1,3 +1,4 @@
 db/*.*
 config/secrets.yml
-.bundle/
+.bundle/sendgrid.env
+sendgrid.env
