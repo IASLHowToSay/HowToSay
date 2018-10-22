@@ -1,6 +1,4 @@
 require 'roda'
-require 'sendgrid-ruby'
-include SendGrid
 
 module Howtosay
   # Web controller for Howtosay API
@@ -22,28 +20,17 @@ module Howtosay
             verification_data = JSON.parse(routing.body.read)
             email = verification_data['email']
             reset_url = verification_data['reset_url']
-            puts verification_data
             account = Howtosay::Account.where(email: email).first
             if account
-              from = Email.new(email: 'noreply@howtosay.com')
-              to = Email.new(email: email)
-              subject = '[Howtosay]更新密碼'
-              html_content = " <p> #{account.name} 你好, </p>
-                <p>Howtosay 收到您要忘記密碼的困擾</p></br>
-                <p>請點擊此連結到更新密碼頁面 <a href=\"#{reset_url}\">更換密碼</a></p>
-                <p>IASL祝您有美好的一天</p></br></br>
-                <hr>
-                <p>請不要回寄信，此信箱為系統發送信件，感謝! </br>"
-              content = Content.new(type: 'text/html', value: html_content)
-              mail = Mail.new(from, subject, to, content)
-              sg = SendGrid::API.new(api_key: Api.config.SENDGRID_API_KEY)
-              sg.client.mail._('send').post(request_body: mail.to_json)
+              SendRecoveryEmail.new().call(email, reset_url)
               response.status = 202
               response['Location'] = "#{@account_route}/forgetpassword"
               {'message': '請去信箱中查看 noreply@howtosay.com 的信件'}.to_json()
             else
               raise('此帳號不存在！')
             end
+          rescue UnSendRecoveryEmailError => error
+            routing.halt 500, { message: error.message }.to_json
           rescue StandardError => error
             routing.halt 404, { message: error.message }.to_json
           end
@@ -125,12 +112,15 @@ module Howtosay
           }
         rescue Sequel::MassAssignmentRestriction
           routing.halt 400, { message: 'Illegal Request' }.to_json
+        rescue FailedGradeAllocation => error
+          puts [error.class, error.message].join ': '
+          routing.halt 500, { message: 'Can\'t allocate the grade' }.to_json
+        rescue FailedRewriteAllocation => error
+          puts [error.class, error.message].join ': '
+          routing.halt 500, { message: 'Can\'t allocate the grade' }.to_json
         rescue StandardError => error
           puts error.inspect
           routing.halt 500, { message: error.message }.to_json
-        rescue SendAllocateQuestionsRequestError => error
-          puts [error.class, error.message].join ': '
-          routing.halt 400, { message: 'Can\'t send the allocation' }.to_json
         end
       end
     end
