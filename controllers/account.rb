@@ -22,7 +22,7 @@ module Howtosay
             reset_url = verification_data['reset_url']
             account = Howtosay::Account.where(email: email).first
             if account
-              SendRecoveryEmail.new().call(email, reset_url)
+              SendRecoveryEmail.new(Api.config).call(email, account.name, reset_url)
               response.status = 202
               response['Location'] = "#{@account_route}/forgetpassword"
               {'message': '請去信箱中查看 noreply@howtosay.com 的信件'}.to_json()

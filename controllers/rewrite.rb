@@ -87,7 +87,11 @@ module Howtosay
             routing.get do
               begin
                 labelpage = Labelpage.new(email, cate_id)
-                labelpage ? labelpage.to_json() : raise('labelpage not found')
+                unless labelpage.to_json() == JSON(nil)
+                  labelpage.to_json()
+                else
+                  raise('labelpage not found')
+                end
               rescue StandardError => error
                 routing.halt 404, { message: error.message }.to_json
               end
