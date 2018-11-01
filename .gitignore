@@ -1,4 +1,5 @@
-db/*.*
+db/migrations/*
+db/dev.db
 config/secrets.yml
 .bundle/sendgrid.env
 sendgrid.env
