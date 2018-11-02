@@ -1,9 +1,9 @@
 ---
 - can_rewrite: true
   rewrite_amount: 10
-  rewrite_people: 60
+  rewrite_people: 100
   rewrite_description: '歡迎大家來到這，下列有六大類別的題型需要請大家換句話說。\n\n1.各題型進度顯示如[已完成題數]/[需完成題數]表示。\n2.進入題目後，點擊「下一題」才會儲存答案。\n3.確認答案後不可以更改，請謹慎作答，感謝！'
   can_grade: false
   grade_amount: 10
-  grade_people: 60
+  grade_people: 100
   grade_description: '歡迎大家來到這，下列有六大類別的題型需要請大家確認相關性。\n\n1.各題型進度顯示如[已完成題數]/[需完成題數]表示。\n2.進入題目後，點擊「下一題」才會儲存答案。\n3.確認答案後不可以更改，請謹慎作答，感謝！'
