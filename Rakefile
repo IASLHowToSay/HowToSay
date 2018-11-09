@@ -67,6 +67,24 @@ namespace :db do
     Sequel::Seeder.apply(app.DB, 'db/seeds')
   end
 
+  desc 'export cvs data'
+  task :export_csv => [:setup, :print_env, :load_models] do
+    require 'csv'
+    CSV.open("export.csv", "wb") do |csv|
+      csv << ['user', 'category', 'question', 'answer','detail']
+      Howtosay::Account.all.each do |account|
+        answers = Howtosay::Answer.where(rewriter_id: account.id).all
+        answers.each do |answer|
+          question = Howtosay::Question.where(id: answer.question_id).first
+          cate = Howtosay::Cate.where(id: question.cate_id).first
+          good_details = Howtosay::Gooddetail.where(rewriter_id: account.id).where(question_id: answer.question_id).first
+          detail = Howtosay::Detail.where(id: good_details.detail_id).first
+          csv << [account.name, cate.name, question.content, answer.content, detail.name]
+        end
+      end
+    end
+  end
+
 end
 
 namespace :newkey do

@@ -35,7 +35,7 @@
 - name: '尺寸問題'
   cate: '衣'
   description: 'EX:這件獵裝下擺會不會太長? EX:為什麼我穿娃娃裝腰線的位置和別人不一樣 EX:AE女生毛衣外套該穿幾號?'
-- name: '評價推薦'
+- name: '評價/推薦'
   cate: '衣'
   description: 'EX:請大家推薦一下牛角扣的外套 EX:有沒有做襯衫做得很好的地方??? EX:AMENA鞋子材質評價'
 - name: '穿衣禮儀'

@@ -41,6 +41,7 @@ module Howtosay
               rewriter_id: info[:account_id],
               detail_id: info[:detail_id]
             } 
+            puts info[:detail_id]
             Gooddetail.create(gooddetail_info)
           
             # 完成題目，更新 task

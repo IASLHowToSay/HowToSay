@@ -10,7 +10,7 @@ Sequel.migration do
 
       Integer :question_id, null: false
       Integer :rewriter_id, null: false
-      Boolean :detail_id, null: false
+      Integer :detail_id, null: false
 
       foreign_key [:question_id], table: :questions
       foreign_key [:rewriter_id], table: :accounts
