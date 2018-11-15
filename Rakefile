@@ -70,7 +70,8 @@ namespace :db do
   desc 'export cvs data'
   task :export_csv => [:setup, :print_env, :load_models] do
     require 'csv'
-    CSV.open("export.csv", "wb") do |csv|
+    CSV.open("export.xls", "wb") do |csv|
+      csv.to_io.write "\uFEFF"
       csv << ['user', 'category', 'question', 'answer','detail']
       Howtosay::Account.all.each do |account|
         answers = Howtosay::Answer.where(rewriter_id: account.id).all
@@ -81,6 +82,16 @@ namespace :db do
           detail = Howtosay::Detail.where(id: good_details.detail_id).first
           csv << [account.name, cate.name, question.content, answer.content, detail.name]
         end
+      end
+    end
+  end
+
+  desc 'testing'
+  task :testing => [:setup, :print_env, :load_models] do
+    status = Howtosay::System.first
+    if Howtosay::Question.where(rewrite_people: status.rewrite_people).count == Howtosay::Question.count
+      Howtosay::Question.all.each do |q|
+        q.update(rewrite_people: 0)
       end
     end
   end

@@ -88,6 +88,7 @@ module Howtosay
         begin
           sync{
             status = System.first
+            
             new_data = JSON.parse(routing.body.read)
             new_data.merge!(
               can_rewrite: status.can_rewrite,
@@ -100,8 +101,18 @@ module Howtosay
         
             # 發送分配訊號
             if status.can_rewrite && !status.can_grade
+              if Question.where(rewrite_people: status.rewrite_people).count == Question.count
+                Question.all.each do |q|
+                  q.update(rewrite_people: 0)
+                end
+              end
               AllocateRewriteQuestion.new(status, new_account).call()
             elsif !status.can_rewrite && status.can_grade
+              if Question.where(grade_people: status.grade_people).count == Question.count
+                Question.all.each do |q|
+                  q.update(grade_people: 0)
+                end
+              end
               AllocateGradeQuestion.new(status, new_account).call()
             end
 
