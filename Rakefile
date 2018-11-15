@@ -68,7 +68,7 @@ namespace :db do
   end
 
   desc 'export cvs data'
-  task :export_csv => [:setup, :print_env, :load_models] do
+  task :export_excel => [:setup, :print_env, :load_models] do
     require 'csv'
     CSV.open("export.xls", "wb") do |csv|
       csv.to_io.write "\uFEFF"
