@@ -67,7 +67,7 @@ namespace :db do
     Sequel::Seeder.apply(app.DB, 'db/seeds')
   end
 
-  desc 'export cvs data'
+  desc 'export excel format data'
   task :export_excel => [:setup, :print_env, :load_models] do
     require 'csv'
     CSV.open("export.xls", "wb") do |csv|

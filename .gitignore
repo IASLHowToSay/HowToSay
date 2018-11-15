@@ -3,3 +3,4 @@ db/dev.db
 config/secrets.yml
 .bundle/sendgrid.env
 sendgrid.env
+export.xls
